@@ -19,11 +19,27 @@ public class Order extends BaseEntity {
     private List<OrderItem> orderItems;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn("delivery_id")
+    @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
     private Date orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    // 연관관계 메서드
+    public void setMember(Member member) {
+        this.member = member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
 }
