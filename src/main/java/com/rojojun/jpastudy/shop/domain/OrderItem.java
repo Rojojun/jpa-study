@@ -5,8 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 public class OrderItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,4 +24,15 @@ public class OrderItem extends BaseEntity {
     private int orderPrice;
     private int count;
 
+    public void cancel() {
+        getItem().addStock(count);
+    }
+
+    public int getTotalPrice() {
+        return getOrderPrice() * getCount();
+    }
+
+    public static OrderItem of(Item item, int orderPrice, int count) {
+        return new OrderItem(item, null, orderPrice, count);
+    }
 }
