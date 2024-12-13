@@ -40,7 +40,7 @@ public class OrderRepository {
 
         if (StringUtils.hasText(orderSearch.getMemberName())) {
             Join<Order, Member> memberJoin = orderRoot.join("members", JoinType.INNER);
-            Predicate name = cb.like(memberJoin.<String>get("name"), "%" + orderSearch.getMemberName() + "%");
+            Predicate name = cb.like(memberJoin.get("name"), "%" + orderSearch.getMemberName() + "%");
             criteria.add(name);
         }
 
